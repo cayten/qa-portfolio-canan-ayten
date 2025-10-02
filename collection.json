@@ -1,0 +1,33 @@
+{
+  "info": { "name": "QA Portfolio – ReqRes Smoke", "_postman_id": "qa-reqres", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+  "item": [
+    {
+      "name": "List Users",
+      "request": { "method": "GET", "url": { "raw": "https://reqres.in/api/users?page=2", "protocol": "https", "host": ["reqres","in"], "path": ["api","users"], "query":[{"key":"page","value":"2"}] } },
+      "event": [{
+        "listen": "test",
+        "script": { "exec": [
+          "pm.test('Status is 200', ()=> pm.response.to.have.status(200));",
+          "const json = pm.response.json();",
+          "pm.test('Has data array', ()=> Array.isArray(json.data));"
+        ], "type": "text/javascript" }
+      }]
+    },
+    {
+      "name": "Create User",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "https://reqres.in/api/users",
+        "body": { "mode": "raw", "raw": "{\"name\":\"Canan QA\",\"job\":\"tester\"}" }
+      },
+      "event": [{
+        "listen": "test",
+        "script": { "exec": [
+          "pm.test('Created', ()=> pm.response.to.have.status(201));",
+          "pm.test('Name echoed', ()=> pm.response.json().name === 'Canan QA');"
+        ], "type": "text/javascript" }
+      }]
+    }
+  ]
+}
